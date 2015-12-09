@@ -1,0 +1,219 @@
+/* 91.461 Assignment 9
+ * File: styles.css
+ * Author: Peter Welby, pwelby@cs.uml.edu
+ * Styles to be applied to the page and the dynamically constructed table
+ * See: ../index.html, ../js/main.js, ../js/tiles.js
+ */
+
+/* Import Open Sans font from Google Fonts for use on this page */
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic);
+
+html {
+    background-color: #f1f1f1;
+}
+
+body {
+    margin: 0;
+    background-color: #f1f1f1;
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    color: #161616;
+
+}
+
+h1 {
+    text-align: center;
+    font-size: 3em;
+    font-weight: 700;
+}
+
+h2 {
+    text-align: center;
+    font-size: 2em;
+    font-weight: 700;
+}
+
+/* Normalize tile image sizes  */
+img.TileImage {
+    width: 50px;
+    height: 50px;
+}
+
+/* Add margin around playing tile divs */
+div.TileDiv {
+    margin: 2px;
+}
+
+/* Add background to the hand slots */
+div.handSlot {
+    display: inline-block;
+    min-height:58px;
+    min-width: 58px;
+    padding: 4px;
+    background-color: rgba(100, 100, 100, 0.4);
+}
+
+div.handArea {
+    display: inline-block;
+    margin-top: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+/* Board Tiles -- Plain, special score tiles, and the star */
+div.gameArea {
+    display: inline-block;
+    margin-bottom: 1em;
+}
+
+div.boardSlot {
+    vertical-align: middle;
+    background-color: #ffbe8e;
+    text-align: center;
+    display: inline-block;
+    font-size: 0.75em;
+    min-width: 64px;
+    min-height: 64px;
+}
+
+div.boardTripleWord {
+    background-color: #ff7777;
+}
+
+div.boardDoubleLetter {
+    background-color: #4d8fff;
+}
+
+img.boardStar {
+    margin-top: 7px;
+    width: 50px;
+    height: 50px;
+}
+
+/* --- OLD STYLES BELOW --- */
+
+/* Table formatting */
+#tableArea {
+    width: 100%;
+    align-content: center;
+    text-align: center;
+}
+
+table {
+    display: inline-table;
+    border: 1px black;
+}
+
+td {
+    border: 1px black;
+    padding: 0.5em;
+    background-color: white;
+    text-align: center;
+    color: #161616;
+}
+
+.ital {
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Form formatting */
+#controlPanel {
+    text-align: center;
+}
+
+#tabFormArea {
+    margin-top: 10px;
+}
+
+fieldset {
+    padding: 2px 8px 8px 8px;
+    font-weight: 700;
+    text-align: left;
+    display: inline-block;
+    width: 32%;
+}
+
+input {
+    width: 4em;
+}
+
+button {
+    min-width: 8em;
+}
+
+/* Error message formatting */
+#message {
+    color: #ff0000;
+    font-style: italic;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Class-based styling for special cells, e.g. */
+/* Multiplier/multiplicand labels, squares */
+
+.indexLabel {
+    background-color: #202020;
+    color: #fafafa;
+}
+
+.squareProduct {
+    background-color: #006CFF;
+    font-weight: 700;
+}
+
+/* Styles for jQuery validation */
+input.error {
+    background-color: #FF6666;
+}
+
+label.error {
+    color: red;
+    font-style: italic;
+    font-weight: 400;
+    margin-left: 0.5em;
+}
+
+/* Styles for jQuery UI widgets */
+.ui-widget {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+}
+
+.ui-widget button {
+    margin-top: 8px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+}
+
+#sliderColumnStart.ui-widget-content {
+    margin-top: 5px;
+    border: 1px solid #646464;
+    background: #a0a0a0;
+}
+
+#sliderColumnEnd.ui-widget-content {
+    margin-top: 5px;
+    border: 1px solid #646464;
+    background: #a0a0a0;
+}
+
+#sliderRowStart.ui-widget-content {
+    margin-top: 5px;
+    border: 1px solid #646464;
+    background: #a0a0a0;
+}
+
+#sliderRowEnd.ui-widget-content {
+    margin-top: 5px;
+    border: 1px solid #646464;
+    background: #a0a0a0;
+}
+
+#sliderTabRange.ui-widget-content {
+    margin: 5px 0;
+    border: 1px solid #646464;
+    background: #a0a0a0;
+}

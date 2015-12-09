@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--
+           Peter Welby
+           UMass Lowell Computer Science Undergraduate - 91.461 GUI Programming I
+           pwelby@cs.uml.edu
+           File: index.html, created 17 Nov. 2015
+           A minimal implementation of a drag-and-drop Scrabble game, with a single line
+           of the Scrabble board and a 7-tile hand to be played.
+    -->
+    <title>91.461 Assignment 9</title>
+    <!-- jQuery UI stylesheets -->
+    <link rel="stylesheet" href="css/jquery-ui.min.css" />
+    <link rel="stylesheet" href="css/jquery-ui.structure.min.css" />
+    <link rel="stylesheet" href="css/jquery-ui.theme.min.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/additional-methods.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <!-- This is Jesse's associative array structure for the tile distribution. -->
+    <script src="js/Scrabble_Pieces_AssociativeArray_Jesse.js"></script>
+    <!-- Game code -->
+    <script src="js/tiles.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body>
+    <h1>91.461 Assignment 9</h1>
+    <h2>Scrabble</h2>
+    <div id="gameArea">
+        <!-- A line's worth of scrabble board squares, including bonuses and the center star -->
+        <div class="boardSlot boardTripleWord"><p>TRIPLE<br />WORD<br />SCORE</p></div>
+        <div class="boardSlot boardPlain"></div>
+        <div class="boardSlot boardPlain"></div>
+        <div class="boardSlot boardDoubleLetter"><p>DOUBLE<br />LETTER<br />SCORE</p></div>
+        <div class="boardSlot boardPlain"></div>
+        <div class="boardSlot boardPlain"></div>
+        <div class="boardSlot boardPlain"></div>
+        <div class="boardSlot" id="boardStar"><img class="boardStar" src="img/blackstar-nobg.png" /></div>
+        <div class="boardSlot boardPlain"></div>
+        <div class="boardSlot boardPlain"></div>
+        <div class="boardSlot boardPlain"></div>
+        <div class="boardSlot boardDoubleLetter"><p>DOUBLE<br />LETTER<br />SCORE</p></div>
+        <div class="boardSlot boardPlain"></div>
+        <div class="boardSlot boardPlain"></div>
+        <div class="boardSlot boardTripleWord"><p>TRIPLE<br />WORD<br />SCORE</p></div>
+    </div>
+    <div id="handArea">
+        <p>Your Hand:</p>
+        <!-- The player can have seven tiles in a hand -->
+        <div class="handSlot" id="handSlot1"></div>
+        <div class="handSlot" id="handSlot2"></div>
+        <div class="handSlot" id="handSlot3"></div>
+        <div class="handSlot" id="handSlot4"></div>
+        <div class="handSlot" id="handSlot5"></div>
+        <div class="handSlot" id="handSlot6"></div>
+        <div class="handSlot" id="handSlot7"></div>
+    </div>
+    <div id="uiButtonArea"></div>
+    <p id="message"></p>
+</body>
+</html>
