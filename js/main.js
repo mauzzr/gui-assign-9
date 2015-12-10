@@ -12,18 +12,46 @@
  * an error message is displayed instead.
  *
  */
-
 var populateHand = function() {
-    $(".handSlot").each(function(index) {
-        var me = $(this), newDiv = makeRandomTileDiv();
-        if (!($(this).hasClass("occupied")) && newDiv) {
-            me.append(newDiv);
-            me.addClass("occupied");
-        } else {
-            // We're out of tiles, so tell the player
-            $("#message").html("Out of tiles!");
+    var i,
+        freeSlots = $(".handSlot").not(".occupied");
+
+    if (freeSlots.length === 0) {
+        $("#message").html("Your hand is full!").animate({opacity: 0}, 1500, "linear", function() {
+            $("#message").html("").css("opacity", 1.0);
+        });
+    } else {
+        for (i = 0; i < freeSlots.length; i++) {
+            $(freeSlots[i]).append(makeRandomTileDiv());
         }
-    });
+    }
+};
+
+/**
+ * Function: resetBoard()
+ * Removes all draggables from the DOM, and returns the game board to its original state.
+ */
+var resetBoard = function() {
+    var p;
+    // reset our associative tile array
+    for (p in ScrabbleTiles) {
+        if (ScrabbleTiles.hasOwnProperty(p)) {
+            ScrabbleTiles[p]["number-remaining"] = ScrabbleTiles[p]["original-distribution"];
+        }
+    }
+
+    // Clear the board and correct the occupied state for populateHand()
+    $(".ui-draggable").remove();
+    updateOccupiedState();
+
+    // Populate the hand
+    populateHand();
+
+    // Refresh the board state
+    updateOccupiedState();
+    updateContainedLetters();
+
+    $("#message").html("");
 };
 
 // Most of the actual "game" will happen in here -- updating will be handled by jQuery's provided event handlers
@@ -33,41 +61,46 @@ $(document).ready(function(){
                 $(this).data("containedLetter", "");
             },
             drop: function(event, ui) {
-                //var freeHandSlot = $(".handSlot").not(".occupied").first().addClass("occupied");
-                $(this).addClass("occupied");
                 $(this).append(ui.draggable);
                 snapToMiddle(ui.draggable, $(this));
-
-                // Once we drop a draggable into a slot, it shouldn't accept any others
-                $(this).droppable("option", "accept", ui.draggable);
 
                 // Update board state
                 updateOccupiedState();
                 updateContainedLetters();
 
-            },
-            out: function(event, ui) {
-                $(this).droppable("option", "accept", ".ui-draggable");
             }
+            //out: function(event, ui) {
+            //    $(this).droppable("option", "accept", ".ui-draggable");
+            //}
         },
         handDropOptions = {
-            create: function(event, ui) {
-            },
             drop: function(event, ui) {
-                var freeHandSlot = $(".handSlot").not(".occupied").first().addClass("occupied");
-                    // this square isn't occupied
-                    $(this).append(ui.draggable);
-                    snapToMiddle(ui.draggable, $(this));
+                $(this).append(ui.draggable);
+                snapToMiddle(ui.draggable, $(this));
+
+                // Update board state
+                updateOccupiedState();
+                updateContainedLetters();
+
             }
+            //out: function(event, ui) {
+            //    $(this).droppable("option", "accept", ".ui-draggable");
+            //}
         };
 
+    $("#refill").on("click", function(){
+        populateHand();
+        updateOccupiedState();
+    });
+    $("#reset").on("click", resetBoard);
 
     // initialize board droppables
     $(".boardSlot").droppable(boardDropOptions);
 
-    // initialize hand slot droppables, then populate the hand
+    // initialize hand slot droppables
     $(".handSlot").droppable(handDropOptions);
 
+    // initialize board state
     populateHand();
     updateOccupiedState();
     updateContainedLetters();
@@ -94,9 +127,15 @@ var snapToMiddle = function(dragger, target){
 var updateOccupiedState = function() {
     $(".ui-droppable").each(function(index) {
         if ($(this).find("div.ui-draggable").length > 0) {
+            // add occupied class for the functions relying on board state
             $(this).addClass("occupied");
+            // set this occupied slot to only accept its child
+            $(this).droppable("option", "accept", $(this).find("div.ui-draggable"))
         } else {
+            // no longer occupied
             $(this).removeClass("occupied");
+            // set this slot to accept any tile
+            $(this).droppable("option", "accept", ".ui-draggable");
         }
     });
 };
