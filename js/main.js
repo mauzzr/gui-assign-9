@@ -171,14 +171,16 @@ var updateContainedLetters = function() {
  * Function: updateScore(): updates the score using the current set of occupied board tiles
  */
 var updateScore = function() {
-    var numScore = 0, i;
+    var numScore = 0, i, strWord = "";
     $(".boardSlot.occupied").each(function() {
 
         if ($(this).hasClass("boardDoubleLetter")) {
-            numScore += $(this).data("containedLetter") ? (2 * ScrabbleTiles[$(this).data("containedLetter")]["value"]) : 0;
-        } else {
             // a bit over-defensive, but just in case there isn't a letter, don't tack on any score
+            numScore += $(this).data("containedLetter") ? (2 * ScrabbleTiles[$(this).data("containedLetter")]["value"]) : 0;
+            strWord += $(this).data("containedLetter") ? $(this).data("containedLetter") : "";
+        } else {
             numScore += $(this).data("containedLetter") ? ScrabbleTiles[$(this).data("containedLetter")]["value"] : 0;
+            strWord += $(this).data("containedLetter") ? $(this).data("containedLetter") : "";
         }
     });
 
@@ -188,5 +190,6 @@ var updateScore = function() {
         numScore *= 3;
     }
 
-    $("#scoreArea p").html(numScore);
+    $("#pScore").html(numScore);
+    $("#pWord").html(strWord);
 };
