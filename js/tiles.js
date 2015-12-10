@@ -12,7 +12,7 @@
  * associative array, and for each letter add as many as remain of that letter to an array.
  * Then pick from the array at a random index.
  * This method of picking remains statistically accurate even as tiles are removed from the
- * "bag".
+ * collection and put in play.
  * NOTE: This would be better implemented with the array outside this function so that
  * we don't have to iterate through EVERY remaining tile every time we want to get a new letter.
  */

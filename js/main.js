@@ -29,122 +29,50 @@ var populateHand = function() {
 // Most of the actual "game" will happen in here -- updating will be handled by jQuery's provided event handlers
 $(document).ready(function(){
     var boardDropOptions = {
-            activate: function(event, ui) {
-                //console.log("ACTIVATE fired on: " + $(this).attr("id"));
-                //$(this).droppable("option", "deactivate", deactivateHandler);
-                //$(this).droppable("option", "out", doNothing);
-                //console.log($(this).droppable("option", "out"));
-            },
             create: function(event, ui) {
-                //$(this).data("isSource", false);
-                //$(this).data("containedLetter", "");
+                $(this).data("containedLetter", "");
             },
-            deactivate: deactivateHandler,
             drop: function(event, ui) {
-                var freeHandSlot = $(".handSlot").not(".occupied").first().addClass("occupied");
-                if (!($(this).hasClass("occupied"))) {
-                    // this square isn't occupied
-                    $(this).addClass("occupied");
-                    $(this).append(ui.draggable);
-                    snapToMiddle(ui.draggable, $(this));
-                } else {
-                    // this slot is occupied, so revert the draggable to a free hand slot and set the occupied class
-                    // on that slot. if no hand slots are free, send it to the jail
-                    snapToMiddle(ui.draggable, freeHandSlot ? freeHandSlot : $("#pile"));
-                    // notify the user
-                    $("#message").html("You cannot place a tile on an occupied square.")
-                        .animate({opacity: 0.0}, 1500, "linear",
-                        function() {
-                            $("#message").html("").css("opacity", 1.0);
-                        });
-                }
+                //var freeHandSlot = $(".handSlot").not(".occupied").first().addClass("occupied");
+                $(this).addClass("occupied");
+                $(this).append(ui.draggable);
+                snapToMiddle(ui.draggable, $(this));
+
+                // Once we drop a draggable into a slot, it shouldn't accept any others
+                $(this).droppable("option", "accept", ui.draggable);
+
+                // Update board state
+                updateOccupiedState();
+                updateContainedLetters();
+
             },
-            out: dropOutHandler,
-            over: function (event, ui) {
-                console.log($(this).attr("id") + " isSource: " + $(this).data("isSource"));
-                if (!$(this).data("isSource")) {
-                    console.log("we should be getting here");
-                    $(this).off("dropout");
-                }
+            out: function(event, ui) {
+                $(this).droppable("option", "accept", ".ui-draggable");
             }
         },
         handDropOptions = {
-            activate: function(event, ui) {
-                console.log("ACTIVATE fired on: " + $(this).attr("id"));
-                //$(this).droppable("option", "out", doNothing);
-                //console.log($(this).droppable("option", "out"));
-            },
             create: function(event, ui) {
-                $(this).data("isSource", false);
-            },
-            deactivate: function(event, ui) {
-                //console.log($(this).attr("id") + " isSource: " + $(this).data("isSource"));
-                //if (($(this).data("isSource")) && !($(this).hasClass("occupied"))) {
-                //    $(this).addClass("occupied");
-                //}
-                //$(this).droppable("option", "out", dropOutHandler);
             },
             drop: function(event, ui) {
                 var freeHandSlot = $(".handSlot").not(".occupied").first().addClass("occupied");
                     // this square isn't occupied
                     $(this).append(ui.draggable);
                     snapToMiddle(ui.draggable, $(this));
-                //var freeHandSlot = $(".handSlot").not(".occupied").first().addClass("occupied");
-                //if ($(this).attr("class").indexOf("occupied") < 0) {
-                    // this square isn't occupied
-                //    $(this).addClass("occupied");
-                //    snapToMiddle(ui.draggable, $(this));
-                //} else {
-                    // this slot is occupied, so revert the draggable to a free hand slot and set the occupied class
-                    // on that slot. if no hand slots are free, send it to the jail
-                //    snapToMiddle(ui.draggable, (freeHandSlot.length > 0) ? freeHandSlot : $("#jail"));
-                    // notify the user
-                //    $("#message").html("You cannot place a tile on an occupied square.")
-                //        .animate({opacity: 0.0}, 1500, "linear",
-                //        function() {
-                //            $("#message").html("").css("opacity", 1.0);
-                //        });
-                //}
-            },
-            out: dropOutHandler,
-            over: function (event, ui) {
-                console.log($(this).attr("id") + " isSource: " + $(this).data("isSource"));
-                if (!$(this).data("isSource")) {
-                    console.log("we should be getting here");
-                    $(this).off("dropout");
-                }
             }
         };
+
 
     // initialize board droppables
     $(".boardSlot").droppable(boardDropOptions);
 
     // initialize hand slot droppables, then populate the hand
     $(".handSlot").droppable(handDropOptions);
+
     populateHand();
+    updateOccupiedState();
+    updateContainedLetters();
 
 });
-
-/**
- * The following event handlers have been pulled out as variables so that they can be dynamically swapped out
- * in order to maintain the proper state among the droppable slots
- */
-
-var deactivateHandler = function (event, ui) {
-    console.log($(this).attr("id") + " isSource: " + $(this).data("isSource"));
-    if (($(this).data("isSource")) && !($(this).hasClass("occupied"))) {
-        $(this).addClass("occupied");
-    }
-    $(this).droppable("option", "out", dropOutHandler);
-}
-
-var dropOutHandler = function (event, ui) {
-    console.log("OUT fired on: " + $(this).attr("id"));
-    $(this).data("isSource", true);
-    $(this).removeClass("occupied");
-    $(".ui-droppable").not(this).droppable("option", "out", jQuery.noop);
-    $(this).droppable("option", "deactivate", jQuery.noop);
-};
 
 /**
  * Function: snapToMiddle(dragger, target)
@@ -163,20 +91,34 @@ var snapToMiddle = function(dragger, target){
 /**
  * Function: updateOccupiedState(): Update the occupied state for all droppables
  */
-
 var updateOccupiedState = function() {
     $(".ui-droppable").each(function(index) {
-        if ($(this).find("div.ui-draggable").length === 1) {
+        if ($(this).find("div.ui-draggable").length > 0) {
             $(this).addClass("occupied");
+        } else {
+            $(this).removeClass("occupied");
         }
     });
 };
 
+/**
+ * Function: updateContainedLetters(): Get the contained letter for each occupied board slot, and set
+ * that property accordingly for score tallying
+ */
+var updateContainedLetters = function() {
+    $(".boardSlot.occupied").each(function(index) {
+        var letterIndex, letter;
 
-/* This version does a nice animation, but not to the right destination:
- var snapToMiddle = function(dragger, target){
- var topMove = target.offset().top - dragger.offset().top + (target.outerHeight(true) - dragger.outerHeight(true)) / 2;
- var leftMove= target.offset().left - dragger.offset().left + (target.outerWidth(true) - dragger.outerWidth(true)) / 2;
- dragger.animate({top:topMove,left:leftMove},{duration:600,easing:'swing'});
- };
-*/
+        letterIndex = $(this).attr("class").indexOf("letter") + 6;
+        letter = $(this).attr("class")[letterIndex];
+
+        $(this).data("occupiedLetter", letter);
+    });
+};
+
+/**
+ * Function: updateScore(): updates the score using the current set of occupied board tiles
+ */
+var updateScore = function() {
+
+};

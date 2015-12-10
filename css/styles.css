@@ -43,7 +43,7 @@ img.TileImage {
 div.TileDiv {
     position: relative;
     margin: 0;
-    z-index: 255;
+    z-index: 1;
 }
 
 /* Add background to the hand slots */
@@ -55,7 +55,7 @@ div.handSlot {
     max-width: 58px;
     max-height: 58px;
     padding: 4px;
-    background-color: #b0b0b0;
+    background-color: rgba(100, 100, 100, 0.4);
     z-index: 0;
 }
 
