@@ -14,7 +14,14 @@
  */
 var populateHand = function() {
     var i,
-        freeSlots = $(".handSlot").not(".occupied");
+        freeSlots = $(".handSlot").not(".occupied"),
+        newDiv = makeRandomTileDiv();
+
+    // newDiv === false if there aren't any tiles left
+    if (!newDiv) {
+        $("#message").html("No tiles left! Reset the board.");
+        return;
+    }
 
     if (freeSlots.length === 0) {
         $("#message").html("Your hand is full!").animate({opacity: 0}, 1500, "linear", function() {
@@ -22,7 +29,7 @@ var populateHand = function() {
         });
     } else {
         for (i = 0; i < freeSlots.length; i++) {
-            $(freeSlots[i]).append(makeRandomTileDiv());
+            $(freeSlots[i]).append(newDiv);
         }
     }
 };
