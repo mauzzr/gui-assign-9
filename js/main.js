@@ -171,9 +171,21 @@ var updateContainedLetters = function() {
  * Function: updateScore(): updates the score using the current set of occupied board tiles
  */
 var updateScore = function() {
-    var numScore = 0, i, strWord = "";
-    $(".boardSlot.occupied").each(function() {
+    var numScore = 0, i, strWord = "", arrWords = [];
 
+    // This feels somewhat rudimentary -- we're only allowing one word per play session. It would be nicer to
+    // do this with multiple words, perhaps push each word onto an array, then evaluate each word's score individually
+    // with bonuses and sum them here
+    if (!validateWords()) {
+        $("#message").html("There are gaps in your word.").animate({opacity: 0}, 1800, "linear", function() {
+            $("#message").html("").css("opacity", 1.0);
+        });
+        $("#pScore").html(numScore);
+        $("#pWord").html(strWord);
+        return;
+    }
+
+    $(".boardSlot.occupied").each(function() {
         if ($(this).hasClass("boardDoubleLetter")) {
             // a bit over-defensive, but just in case there isn't a letter, don't tack on any score
             numScore += $(this).data("containedLetter") ? (2 * ScrabbleTiles[$(this).data("containedLetter")]["value"]) : 0;
@@ -187,12 +199,29 @@ var updateScore = function() {
     // NOTE: According to this thread:
     // http://boardgames.stackexchange.com/questions/9118/scrabble-variation-use-double-and-triple-word-scores-but-not-double-triple-let
     // the TRIPLE WORD SCORE bonus will be applied for EACH triple word score square used.
-    // Here, we just do it as long as the triple word score square is occupied. This will be fixed later with proper
-    // word-break detection
     for (i = 0; i < $(".occupied.boardTripleWord").length; i++) {
         numScore *= 3;
     }
 
     $("#pScore").html(numScore);
     $("#pWord").html(strWord);
+};
+
+/**
+ * Function: validateWords(): Checks for a contiguous word. returns true if the word is contiguous.
+ */
+var validateWords = function() {
+    var beginning = $(".boardSlot.occupied").first(), contiguous = true;
+
+    while (beginning.next().hasClass("occupied")) {
+        beginning = beginning.next();
+    } // we're on the last contiguous letter
+
+    $(beginning).nextAll().each(function(index) {
+        if ($(this).hasClass("occupied")) {
+            contiguous = false;
+        }
+    });
+
+    return contiguous;
 };
