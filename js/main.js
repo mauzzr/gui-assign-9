@@ -74,6 +74,7 @@ $(document).ready(function(){
                 // Update board state
                 updateOccupiedState();
                 updateContainedLetters();
+                updateScore();
 
             }
             //out: function(event, ui) {
@@ -88,6 +89,7 @@ $(document).ready(function(){
                 // Update board state
                 updateOccupiedState();
                 updateContainedLetters();
+                updateScore();
 
             }
             //out: function(event, ui) {
@@ -158,7 +160,7 @@ var updateContainedLetters = function() {
         letterIndex = $(this).attr("class").indexOf("letter") + 6;
         letter = $(this).attr("class")[letterIndex];
 
-        $(this).data("occupiedLetter", letter);
+        $(this).data("containedLetter", letter);
     });
 };
 
@@ -166,5 +168,9 @@ var updateContainedLetters = function() {
  * Function: updateScore(): updates the score using the current set of occupied board tiles
  */
 var updateScore = function() {
+    var numScore = 0;
+    $(".boardSlot.occupied").each(function() {
+        numScore += ScrabbleTiles[$(this).data("containedLetter")]["value"];
+    });
 
 };
