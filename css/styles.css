@@ -41,16 +41,22 @@ img.TileImage {
 
 /* Add margin around playing tile divs */
 div.TileDiv {
-    margin: 2px;
+    position: relative;
+    margin: 0;
+    z-index: 255;
 }
 
 /* Add background to the hand slots */
 div.handSlot {
+    position: relative;
     display: inline-block;
     min-height:58px;
     min-width: 58px;
+    max-width: 58px;
+    max-height: 58px;
     padding: 4px;
-    background-color: rgba(100, 100, 100, 0.4);
+    background-color: #b0b0b0;
+    z-index: 0;
 }
 
 div.handArea {
@@ -68,6 +74,7 @@ div.gameArea {
 }
 
 div.boardSlot {
+    position: relative;
     vertical-align: middle;
     background-color: #ffbe8e;
     text-align: center;
@@ -75,6 +82,13 @@ div.boardSlot {
     font-size: 0.75em;
     min-width: 64px;
     min-height: 64px;
+    max-width: 64px;
+    max-height: 64px;
+    z-index: 0;
+}
+
+div.boardSlot p {
+    z-index: inherit;
 }
 
 div.boardTripleWord {
@@ -89,6 +103,14 @@ img.boardStar {
     margin-top: 7px;
     width: 50px;
     height: 50px;
+}
+
+div#pile {
+    border: 5px solid black;
+    display: inline-block;
+    width: 250px;
+    height: 150px;
+    text-align: center;
 }
 
 /* --- OLD STYLES BELOW --- */
@@ -149,6 +171,10 @@ button {
     font-style: italic;
     font-weight: 700;
     text-align: center;
+}
+
+#messageArea {
+    height: 2em;
 }
 
 /* Class-based styling for special cells, e.g. */

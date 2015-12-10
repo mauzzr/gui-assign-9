@@ -29,10 +29,16 @@ var getRandomTileLetter = function() {
         }
     }
 
+    // no tiles left, so escape
+    if (arrLetters.length === 0) {
+        return false;
+    }
+
     randIndex = Math.floor(Math.random() * arrLetters.length);
 
     return arrLetters[randIndex];
 };
+
 
 /**
  * Function: makeRandomTileDiv()
@@ -41,19 +47,26 @@ var getRandomTileLetter = function() {
 var makeRandomTileDiv = function() {
     var letter = getRandomTileLetter(), newDiv = $("<div></div>"),
         dragOptions = {
-            distance: 10,
+            distance: 4,
             revert: "invalid",
             revertDuration: 250
         };
 
+    // no tiles left
+    if (!letter) {
+        return false;
+    }
+
     ScrabbleTiles[letter]["number-remaining"]--;
+
+    newDiv.addClass("TileDiv");
+    newDiv.addClass("letter" + letter);
 
     if (letter === "_") {
         letter = "Blank";
     }
 
     newDiv.html("<img src='img/Scrabble_Tile_" + letter + ".jpg' class='TileImage' />");
-    newDiv.addClass("TileDiv");
     newDiv.draggable(dragOptions);
     return newDiv;
 };
