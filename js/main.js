@@ -184,8 +184,11 @@ var updateScore = function() {
         }
     });
 
-    // NOTE: Per the scrabble rules, multiple WORD bonus tiles will stack. So for each used TRIPLE WORD SCORE tile,
-    // we triple the score. This will be fixed later with proper word-based score detection
+    // NOTE: According to this thread:
+    // http://boardgames.stackexchange.com/questions/9118/scrabble-variation-use-double-and-triple-word-scores-but-not-double-triple-let
+    // the TRIPLE WORD SCORE bonus will be applied for EACH triple word score square used.
+    // Here, we just do it as long as the triple word score square is occupied. This will be fixed later with proper
+    // word-break detection
     for (i = 0; i < $(".occupied.boardTripleWord").length; i++) {
         numScore *= 3;
     }
