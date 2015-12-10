@@ -33,21 +33,21 @@
     <h2>Scrabble</h2>
     <div id="gameArea">
         <!-- A line's worth of scrabble board squares, including bonuses and the center star -->
-        <div class="boardSlot boardTripleWord"><p>TRIPLE<br />WORD<br />SCORE</p></div>
-        <div class="boardSlot boardPlain"></div>
-        <div class="boardSlot boardPlain"></div>
-        <div class="boardSlot boardDoubleLetter"><p>DOUBLE<br />LETTER<br />SCORE</p></div>
-        <div class="boardSlot boardPlain"></div>
-        <div class="boardSlot boardPlain"></div>
-        <div class="boardSlot boardPlain"></div>
-        <div class="boardSlot" id="boardStar"><img class="boardStar" src="img/blackstar-nobg.png" /></div>
-        <div class="boardSlot boardPlain"></div>
-        <div class="boardSlot boardPlain"></div>
-        <div class="boardSlot boardPlain"></div>
-        <div class="boardSlot boardDoubleLetter"><p>DOUBLE<br />LETTER<br />SCORE</p></div>
-        <div class="boardSlot boardPlain"></div>
-        <div class="boardSlot boardPlain"></div>
-        <div class="boardSlot boardTripleWord"><p>TRIPLE<br />WORD<br />SCORE</p></div>
+        <div class="boardSlot boardTripleWord" id="board1"><p>TRIPLE<br />WORD<br />SCORE</p></div>
+        <div class="boardSlot boardPlain" id="board2"></div>
+        <div class="boardSlot boardPlain" id="board3"></div>
+        <div class="boardSlot boardDoubleLetter" id="board4"><p>DOUBLE<br />LETTER<br />SCORE</p></div>
+        <div class="boardSlot boardPlain" id="board5"></div>
+        <div class="boardSlot boardPlain" id="board6"></div>
+        <div class="boardSlot boardPlain" id="board7"></div>
+        <div class="boardSlot" id="boardStar" id="board8"><img class="boardStar" alt="Star" src="img/blackstar-nobg.png" /></div>
+        <div class="boardSlot boardPlain" id="board9"></div>
+        <div class="boardSlot boardPlain" id="board10"></div>
+        <div class="boardSlot boardPlain" id="board11"></div>
+        <div class="boardSlot boardDoubleLetter" id="board12"><p>DOUBLE<br />LETTER<br />SCORE</p></div>
+        <div class="boardSlot boardPlain" id="board13"></div>
+        <div class="boardSlot boardPlain" id="board14"></div>
+        <div class="boardSlot boardTripleWord" id="board15"><p>TRIPLE<br />WORD<br />SCORE</p></div>
     </div>
     <div id="handArea">
         <p>Your Hand:</p>
@@ -61,6 +61,14 @@
         <div class="handSlot" id="handSlot7"></div>
     </div>
     <div id="uiButtonArea"></div>
-    <p id="message"></p>
+    <div id="messageArea">
+        <p id="message"></p>
+    </div>
+    <!-- In the event that a tile is moved to an invalid slot and there is no free hand slot,
+         e.g. player gets more tiles and moves an in-play tile onto an occupied board slot,
+         the tile goes into the jail instead-->
+    <div id="pile">
+        <h3>The Pile</h3>
+    </div>
 </body>
 </html>
