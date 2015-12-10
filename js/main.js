@@ -30,6 +30,7 @@ var populateHand = function() {
     } else {
         for (i = 0; i < freeSlots.length; i++) {
             $(freeSlots[i]).append(newDiv);
+            newDiv = makeRandomTileDiv();
         }
     }
 };
@@ -57,6 +58,7 @@ var resetBoard = function() {
     // Refresh the board state
     updateOccupiedState();
     updateContainedLetters();
+    updateScore();
 
     $("#message").html("");
 };
@@ -113,6 +115,7 @@ $(document).ready(function(){
     populateHand();
     updateOccupiedState();
     updateContainedLetters();
+    updateScore();
 
 });
 
@@ -157,8 +160,8 @@ var updateContainedLetters = function() {
     $(".boardSlot.occupied").each(function(index) {
         var letterIndex, letter;
 
-        letterIndex = $(this).attr("class").indexOf("letter") + 6;
-        letter = $(this).attr("class")[letterIndex];
+        letterIndex = $(this).find("div.ui-draggable").attr("class").indexOf("letter") + 6;
+        letter = $(this).find("div.ui-draggable").attr("class")[letterIndex];
 
         $(this).data("containedLetter", letter);
     });
@@ -168,9 +171,22 @@ var updateContainedLetters = function() {
  * Function: updateScore(): updates the score using the current set of occupied board tiles
  */
 var updateScore = function() {
-    var numScore = 0;
+    var numScore = 0, i;
     $(".boardSlot.occupied").each(function() {
-        numScore += ScrabbleTiles[$(this).data("containedLetter")]["value"];
+
+        if ($(this).hasClass("boardDoubleLetter")) {
+            numScore += $(this).data("containedLetter") ? (2 * ScrabbleTiles[$(this).data("containedLetter")]["value"]) : 0;
+        } else {
+            // a bit over-defensive, but just in case there isn't a letter, don't tack on any score
+            numScore += $(this).data("containedLetter") ? ScrabbleTiles[$(this).data("containedLetter")]["value"] : 0;
+        }
     });
 
+    // NOTE: Per the scrabble rules, multiple WORD bonus tiles will stack. So for each used TRIPLE WORD SCORE tile,
+    // we triple the score. This will be fixed later with proper word-based score detection
+    for (i = 0; i < $(".occupied.boardTripleWord").length; i++) {
+        numScore *= 3;
+    }
+
+    $("#scoreArea p").html(numScore);
 };

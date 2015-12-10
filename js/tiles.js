@@ -14,7 +14,7 @@
  * This method of picking remains statistically accurate even as tiles are removed from the
  * collection and put in play.
  * NOTE: This would be better implemented with the array outside this function so that
- * we don't have to iterate through EVERY remaining tile every time we want to get a new letter.
+ * we don't have to rebuild the whole thing every time we want to get a new letter.
  */
 var getRandomTileLetter = function() {
     var arrLetters = [], p, numRemaining, randIndex;
